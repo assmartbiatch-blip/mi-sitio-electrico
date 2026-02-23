@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectroBlog · Ingeniería Eléctrica Interactiva</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <!-- Chart.js para gráficas -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Math.js para cálculos -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <h1>⚡ ElectroBlog</h1>
+                <p>Ingeniería eléctrica · Automatización · Tutoriales</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="active">Inicio</a></li>
+                    <li><a href="calculadoras.html">Calculadoras</a></li>
+                    <li><a href="arranques.html">Tipos de arranque</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="biblioteca.html">Biblioteca</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <div class="card" style="text-align: center; background: linear-gradient(135deg, var(--naranja), var(--rosa)); color: white;">
+            <h1 style="color: white; font-size: 2.5rem;">🔌 Ingeniería eléctrica hecha fácil</h1>
+            <p style="font-size: 1.2rem;">Calculadoras interactivas, simuladores y tutoriales prácticos</p>
+        </div>
+
+        <!-- Calculadora Rápida en Inicio -->
+        <div class="card">
+            <h2>⚡ Calculadora Rápida · Corriente Trifásica</h2>
+            <div class="calculadora-grid">
+                <div class="calculadora-card">
+                    <div class="input-group">
+                        <label>Potencia (kW):</label>
+                        <input type="number" id="potencia" value="15" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Tensión (V):</label>
+                        <input type="number" id="tension" value="400" step="10">
+                    </div>
+                    <div class="input-group">
+                        <label>Factor de potencia (cos φ):</label>
+                        <input type="number" id="fp" value="0.85" step="0.01" min="0.5" max="1">
+                    </div>
+                    <div class="input-group">
+                        <label>Eficiencia (%):</label>
+                        <input type="number" id="eficiencia" value="90" min="50" max="100">
+                    </div>
+                    <button onclick="calcularCorriente()">Calcular</button>
+                    <div class="resultado">
+                        Corriente: <span id="corriente">--</span> A
+                    </div>
+                </div>
+                <div class="calculadora-card">
+                    <h3>📌 Fórmula utilizada</h3>
+                    <p style="font-size: 1.2rem;">I = P / (√3 × V × fp × η)</p>
+                    <p>Donde:</p>
+                    <ul>
+                        <li>P: Potencia (W)</li>
+                        <li>V: Tensión línea-línea (V)</li>
+                        <li>fp: Factor de potencia</li>
+                        <li>η: Eficiencia</li>
+                    </ul>
+                    <p style="margin-top: 15px; color: var(--naranja); font-weight: 600;">Resultado en amperios por fase</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Artículos Destacados -->
+        <div class="card">
+            <h2>📚 Tipos de arranque de motores</h2>
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <div class="blog-img">⚡</div>
+                    <div class="blog-content">
+                        <h3>Arranque Directo (DOL)</h3>
+                        <p>El método más simple, ideal para motores pequeños. Corriente de arranque hasta 8× In.</p>
+                        <a href="arranques.html#dol" style="color: var(--naranja);">Ver más →</a>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-img">🔺</div>
+                    <div class="blog-content">
+                        <h3>Estrella-Triángulo</h3>
+                        <p>Reduce la corriente de arranque a 30-40%. Ideal para motores medianos.</p>
+                        <a href="arranques.html#estrellatriangulo" style="color: var(--naranja);">Ver más →</a>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-img">🎚️</div>
+                    <div class="blog-content">
+                        <h3>Soft Starter</h3>
+                        <p>Arranque suave con control de tensión. Rampa ajustable.</p>
+                        <a href="arranques.html#softstarter" style="color: var(--naranja);">Ver más →</a>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-img">📊</div>
+                    <div class="blog-content">
+                        <h3>Variador de Frecuencia</h3>
+                        <p>Control total de velocidad y par. Máxima eficiencia energética.</p>
+                        <a href="arranques.html#vfd" style="color: var(--naranja);">Ver más →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Simulador Rápido -->
+        <div class="card">
+            <h2>📈 Simulador de corriente de arranque</h2>
+            <p>Ajusta los parámetros y observa la curva de corriente</p>
+            <div class="simulador-container">
+                <div class="parametros-simulador">
+                    <div class="slider-group">
+                        <label>Potencia del motor: <span id="potencia-val">15</span> kW</label>
+                        <input type="range" id="sim-potencia" min="1" max="100" value="15" step="1">
+                    </div>
+                    <div class="slider-group">
+                        <label>Tipo de arranque:</label>
+                        <select id="sim-tipo">
+                            <option value="dol">Directo (DOL)</option>
+                            <option value="et">Estrella-Triángulo</option>
+                            <option value="soft">Soft Starter</option>
+                            <option value="vfd">Variador (VFD)</option>
+                        </select>
+                    </div>
+                </div>
+                <canvas id="grafica-arranque"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h3>⚡ ElectroBlog</h3>
+                <p>Tu recurso interactivo de ingeniería eléctrica</p>
+            </div>
+            <div>
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="calculadoras.html">Calculadoras</a></li>
+                    <li><a href="arranques.html">Arranques</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Contacto</h3>
+                <p>Consultas técnicas: 📧 ingenieria@electroblog.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/calculadoras.js"></script>
+    <script src="js/simuladores.js"></script>
+    <script>
+        // Calculadora rápida
+        function calcularCorriente() {
+            const P = parseFloat(document.getElementById('potencia').value) * 1000;
+            const V = parseFloat(document.getElementById('tension').value);
+            const fp = parseFloat(document.getElementById('fp').value);
+            const eficiencia = parseFloat(document.getElementById('eficiencia').value) / 100;
+            
+            const I = P / (Math.sqrt(3) * V * fp * eficiencia);
+            
+            document.getElementById('corriente').textContent = I.toFixed(2);
+        }
+
+        // Inicializar gráfica
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('grafica-arranque')) {
+                actualizarGrafica();
+            }
+        });
+    </script>
+</body>
+</html>

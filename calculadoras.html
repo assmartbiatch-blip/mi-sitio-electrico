@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadoras · ElectroBlog</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.7.0/math.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <h1>⚡ ElectroBlog</h1>
+                <p>Ingeniería eléctrica · Automatización · Tutoriales</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="calculadoras.html" class="active">Calculadoras</a></li>
+                    <li><a href="arranques.html">Tipos de arranque</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="biblioteca.html">Biblioteca</a></li>
+                    <li><a href="contacto.html">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <h2>🔧 Calculadoras Eléctricas</h2>
+            
+            <!-- Calculadora Trifásica -->
+            <div class="calculadora-card" style="margin-bottom: 30px;">
+                <h3>📊 Corriente Trifásica</h3>
+                <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="input-group">
+                            <label>Potencia (kW):</label>
+                            <input type="number" id="calc_potencia" value="15" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label>Tensión (V):</label>
+                            <input type="number" id="calc_tension" value="400" step="10">
+                        </div>
+                        <div class="input-group">
+                            <label>Factor de potencia:</label>
+                            <input type="number" id="calc_fp" value="0.85" step="0.01" min="0.5" max="1">
+                        </div>
+                        <div class="input-group">
+                            <label>Eficiencia (%):</label>
+                            <input type="number" id="calc_eficiencia" value="90" min="50" max="100">
+                        </div>
+                        <button onclick="calcularCorrienteAvanzada()">Calcular corriente</button>
+                    </div>
+                    <div style="background: var(--gris-claro); padding: 20px; border-radius: 15px;">
+                        <h4>Resultados:</h4>
+                        <p><strong>Corriente nominal:</strong> <span id="result_in">--</span> A</p>
+                        <p><strong>Corriente arranque DOL:</strong> <span id="result_dol">--</span> A</p>
+                        <p><strong>Potencia aparente:</strong> <span id="result_s">--</span> kVA</p>
+                        <p><strong>Potencia reactiva:</strong> <span id="result_q">--</span> kVAR</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculadora de Caída de Tensión -->
+            <div class="calculadora-card" style="margin-bottom: 30px;">
+                <h3>📏 Caída de Tensión</h3>
+                <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="input-group">
+                            <label>Longitud del cable (m):</label>
+                            <input type="number" id="caida_longitud" value="50">
+                        </div>
+                        <div class="input-group">
+                            <label>Corriente (A):</label>
+                            <input type="number" id="caida_corriente" value="50">
+                        </div>
+                        <div class="input-group">
+                            <label>Sección (mm²):</label>
+                            <input type="number" id="caida_seccion" value="10">
+                        </div>
+                        <div class="input-group">
+                            <label>Material:</label>
+                            <select id="caida_material">
+                                <option value="cobre">Cobre</option>
+                                <option value="aluminio">Aluminio</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <label>Tensión (V):</label>
+                            <input type="number" id="caida_tension" value="400">
+                        </div>
+                        <button onclick="calcularCaida()">Calcular caída</button>
+                    </div>
+                    <div style="background: var(--gris-claro); padding: 20px; border-radius: 15px;">
+                        <h4>Resultados:</h4>
+                        <p><strong>Caída de tensión:</strong> <span id="caida_v">--</span> V</p>
+                        <p><strong>Porcentaje:</strong> <span id="caida_p">--</span> %</p>
+                        <p id="caida_recomendacion"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculadora de Condensadores -->
+            <div class="calculadora-card">
+                <h3>🔋 Corrección de Factor de Potencia</h3>
+                <div class="row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="input-group">
+                            <label>Potencia activa (kW):</label>
+                            <input type="number" id="cond_potencia" value="100">
+                        </div>
+                        <div class="input-group">
+                            <label>FP actual:</label>
+                            <input type="number" id="cond_fp_actual" value="0.75" step="0.01" min="0.5" max="1">
+                        </div>
+                        <div class="input-group">
+                            <label>FP deseado:</label>
+                            <input type="number" id="cond_fp_deseado" value="0.95" step="0.01" min="0.5" max="1">
+                        </div>
+                        <div class="input-group">
+                            <label>Tensión (V):</label>
+                            <input type="number" id="cond_tension" value="400">
+                        </div>
+                        <div class="input-group">
+                            <label>Frecuencia (Hz):</label>
+                            <input type="number" id="cond_frecuencia" value="60">
+                        </div>
+                        <button onclick="calcularCondensadores()">Calcular</button>
+                    </div>
+                    <div style="background: var(--gris-claro); padding: 20px; border-radius: 15px;">
+                        <h4>Resultados:</h4>
+                        <p><strong>Potencia reactiva necesaria:</strong> <span id="cond_qc">--</span> kVAR</p>
+                        <p><strong>Capacitancia por fase:</strong> <span id="cond_c">--</span> μF</p>
+                        <p id="cond_recomendacion"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <h3>⚡ ElectroBlog</h3>
+                <p>Tu recurso interactivo de ingeniería eléctrica</p>
+            </div>
+            <div>
+                <h3>Enlaces rápidos</h3>
+                <ul>
+                    <li><a href="calculadoras.html">Calculadoras</a></li>
+                    <li><a href="arranques.html">Arranques</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3>Contacto</h3>
+                <p>Consultas técnicas: 📧 ingenieria@electroblog.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/calculadoras.js"></script>
+    <script>
+        function calcularCorrienteAvanzada() {
+            const P = parseFloat(document.getElementById('calc_potencia').value);
+            const V = parseFloat(document.getElementById('calc_tension').value);
+            const fp = parseFloat(document.getElementById('calc_fp').value);
+            const eficiencia = parseFloat(document.getElementById('calc_eficiencia').value);
+            
+            const In = calcularCorrienteTrifasica(P, V, fp, eficiencia);
+            const I_dol = In * 7.5;
+            const S = P / fp;
+            const Q = Math.sqrt(Math.pow(S, 2) - Math.pow(P, 2));
+            
+            document.getElementById('result_in').textContent = In.toFixed(1);
+            document.getElementById('result_dol').textContent = I_dol.toFixed(1);
+            document.getElementById('result_s').textContent = S.toFixed(1);
+            document.getElementById('result_q').textContent = Q.toFixed(1);
+        }
+
+        function calcularCaida() {
+            const L = parseFloat(document.getElementById('caida_longitud').value);
+            const I = parseFloat(document.getElementById('caida_corriente').value);
+            const S = parseFloat(document.getElementById('caida_seccion').value);
+            const material = document.getElementById('caida_material').value;
+            const V = parseFloat(document.getElementById('caida_tension').value);
+            
+            const caida = calcularCaidaTension(L, I, S, material);
+            const porcentaje = (caida / V) * 100;
+            
+            document.getElementById('caida_v').textContent = caida.toFixed(2);
+            document.getElementById('caida_p').textContent = porcentaje.toFixed(2);
+            
+            const recomendacion = document.getElementById('caida_recomendacion');
+            if (porcentaje > 3) {
+                recomendacion.innerHTML = '⚠️ La caída supera el 3% recomendado. Aumente la sección del cable.';
+                recomendacion.style.color = 'var(--error)';
+            } else {
+                recomendacion.innerHTML = '✅ Caída dentro de lo permitido.';
+                recomendacion.style.color = 'var(--exito)';
+            }
+        }
+
+        function calcularCondensadores() {
+            const P = parseFloat(document.getElementById('cond_potencia').value);
+            const fp_actual = parseFloat(document.getElementById('cond_fp_actual').value);
+            const fp_deseado = parseFloat(document.getElementById('cond_fp_deseado').value);
+            const V = parseFloat(document.getElementById('cond_tension').value);
+            const f = parseFloat(document.getElementById('cond_frecuencia').value);
+            
+            const resultado = calcularCondensador(P, fp_actual, fp_deseado, V, f);
+            
+            document.getElementById('cond_qc').textContent = resultado.potencia_reactiva.toFixed(2);
+            document.getElementById('cond_c').textContent = resultado.capacitancia.toFixed(2);
+            
+            const recomendacion = document.getElementById('cond_recomendacion');
+            recomendacion.innerHTML = `💡 Banco de condensadores recomendado: ${Math.ceil(resultado.potencia_reactiva/5)*5} kVAR`;
+        }
+    </script>
+</body>
+</html>
